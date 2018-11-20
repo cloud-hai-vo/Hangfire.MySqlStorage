@@ -1,1 +1,1 @@
-dotnet pack Hangfire.MySql.csproj --configuration Release /p:PackageVersion={version}
+dotnet pack Hangfire.MySql.csproj --configuration Release /p:PackageVersion=1.0.0.3

@@ -25,12 +25,10 @@ namespace Hangfire.MySql.JobQueue
             FetchedJob fetchedJob,
             MySqlStorageOptions storageOptions)
         {
-            if (storage == null) throw new ArgumentNullException("storage");
-            if (connection == null) throw new ArgumentNullException("connection");
             if (fetchedJob == null) throw new ArgumentNullException("fetchedJob");
 
-            _storage = storage;
-            _connection = connection;
+            _storage = storage ?? throw new ArgumentNullException("storage");
+            _connection = connection ?? throw new ArgumentNullException("connection");
             _storageOptions = storageOptions;
             _id = fetchedJob.Id;
             JobId = fetchedJob.JobId.ToString(CultureInfo.InvariantCulture);

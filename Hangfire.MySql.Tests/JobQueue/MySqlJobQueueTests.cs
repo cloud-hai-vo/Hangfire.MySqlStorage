@@ -315,9 +315,7 @@ values (last_insert_id(), @queue)";
         {
             var source = new CancellationTokenSource(TimeSpan.FromSeconds(10));
             return source.Token;
-        }
-
-        public static void Sample(string arg1, string arg2) { }
+        }        
 
         private MySqlJobQueue CreateJobQueue(MySqlConnection connection)
         {

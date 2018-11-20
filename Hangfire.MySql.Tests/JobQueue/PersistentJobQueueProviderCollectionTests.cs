@@ -1,7 +1,7 @@
-﻿using System;
-using System.Linq;
-using Hangfire.MySql.JobQueue;
+﻿using Hangfire.MySql.JobQueue;
 using Moq;
+using System;
+using System.Linq;
 using Xunit;
 
 namespace Hangfire.MySql.Tests.JobQueue
@@ -32,7 +32,7 @@ namespace Hangfire.MySql.Tests.JobQueue
 
             var result = collection.ToArray();
 
-            Assert.Equal(1, result.Length);
+            Assert.True(1 == result.Length);
             Assert.Same(_defaultProvider.Object, result[0]);
         }
 

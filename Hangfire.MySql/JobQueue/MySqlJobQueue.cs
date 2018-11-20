@@ -19,11 +19,8 @@ namespace Hangfire.MySql.JobQueue
         private readonly MySqlStorageOptions _options;
         public MySqlJobQueue(MySqlStorage storage, MySqlStorageOptions options)
         {
-            if (storage == null) throw new ArgumentNullException("storage");
-            if (options == null) throw new ArgumentNullException("options");
-
-            _storage = storage;
-            _options = options;
+            _storage = storage ?? throw new ArgumentNullException("storage");
+            _options = options ?? throw new ArgumentNullException("options");
         }
 
         public IFetchedJob Dequeue(string[] queues, CancellationToken cancellationToken)
@@ -38,7 +35,7 @@ namespace Hangfire.MySql.JobQueue
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 connection = _storage.CreateAndOpenConnection();
-                
+
                 try
                 {
                     using (new MySqlDistributedLock(_storage, "JobQueue", TimeSpan.FromSeconds(30), _options))
@@ -52,12 +49,12 @@ namespace Hangfire.MySql.JobQueue
                             "LIMIT 1;",
                             new
                             {
-                                queues = queues,
+                                queues,
                                 timeout = _options.InvisibilityTimeout.Negate().TotalSeconds,
                                 fetchToken = token
                             });
 
-                        if(nUpdated != 0)
+                        if (nUpdated != 0)
                         {
                             fetchedJob =
                                 connection
@@ -78,7 +75,7 @@ namespace Hangfire.MySql.JobQueue
                     Logger.ErrorException(ex.Message, ex);
                     _storage.ReleaseConnection(connection);
                     throw;
-                }
+                }                
 
                 if (fetchedJob == null)
                 {
